@@ -6,58 +6,62 @@ from maya import cmds
 from maya import OpenMayaUI as omui
 
 try:
-    from PySide6.QtWidgets import QApplication, QWidget
+    from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
     from shiboken6 import wrapInstance
 except ImportError:
-    from PySide2.QtWidgets import QApplication, QWidget
+    from PySide2.QtWidgets import QApplication, QMainWindow, QWidget
     from shiboken2 import wrapInstance
 
-from .window import PysideGuiTemplateMainWindow
+from .template_main_window import TemplateMainWindow
 from . import restore as restore_module
 
 
 def restart() -> None:
-    if omui.MQtUtil.findControl(PysideGuiTemplateMainWindow.name):
-        cmds.deleteUI(PysideGuiTemplateMainWindow.workspace_control, control=True)
+    ptr = omui.MQtUtil.findControl(TemplateMainWindow.name)
+    if ptr is not None:
+        cmds.deleteUI(TemplateMainWindow.workspace_control, control=True)
 
-    win = __create_window()
-    restore_script = dedent(inspect.getsource(restore_module))
-    win.show(dockable=True, uiScript=restore_script)
+    window = __create_window()
+    window.show(dockable=True, uiScript=__get_restore_script())
 
 
 def restore() -> None:
-    PysideGuiTemplateMainWindow.restored_instance = __create_window()  # WARNING: GCに破棄されないようにクラス変数に保存しておく
-    ptr = omui.MQtUtil.findControl(PysideGuiTemplateMainWindow.name)
+    TemplateMainWindow.restored_instance = __create_window()  # WARNING: GCに破棄されないようにクラス変数に保存しておく
+    ptr = omui.MQtUtil.findControl(TemplateMainWindow.name)
     restored_control = omui.MQtUtil.getCurrentParent()
     omui.MQtUtil.addWidgetToMayaLayout(int(ptr), int(restored_control))
 
 
 def start() -> None:
-    ptr = omui.MQtUtil.findControl(PysideGuiTemplateMainWindow.name)
-    if ptr:
-        win = wrapInstance(int(ptr), QWidget)
-        if win.isVisible():
-            win.show()  # NOTE: show()することで再フォーカスする
+    # 現在Maya内に存在するPysideGuiTemplateMainWindowのポインタを取得する
+    ptr = omui.MQtUtil.findControl(TemplateMainWindow.name)
+    if ptr is not None: # ある場合
+        window = wrapInstance(int(ptr), QMainWindow)
+        if window.isVisible():
+            window.show()  # show()することで再フォーカスする
         else:
-            win.setVisible(True)
-    else:
-        win = __create_window()
-        cmd = dedent(inspect.getsource(restore_module))
+            window.setVisible(True)
+    else: # ない場合
+        window = __create_window() # 新規で生成する
 
         # TODO: 良くわからないので調べる
         # 空のWindowが生成されてしまった場合
-        if cmds.workspaceControl(PysideGuiTemplateMainWindow.workspace_control, q=True, exists=True):
+        if cmds.workspaceControl(TemplateMainWindow.workspace_control, q=True, exists=True):
             # 既存のWorkspaceControlを一旦削除する
-            cmds.deleteUI(PysideGuiTemplateMainWindow.workspace_control, control=True)
+            cmds.deleteUI(TemplateMainWindow.workspace_control, control=True)
 
-        win.show(dockable=True, uiScript=cmd)
+        window.show(dockable=True, uiScript=__get_restore_script())
 
 
-def __create_window() -> PysideGuiTemplateMainWindow:
-    app = QApplication.instance()
-    main_window = PysideGuiTemplateMainWindow()
-    main_window.init()
-    return main_window
+def __create_window() -> TemplateMainWindow:
+    window = TemplateMainWindow()
+    window.init()
+    return window
+
+
+def __get_restore_script() -> str:
+    return dedent(inspect.getsource(restore_module))
+
 
 # startup
 # from pyside_gui_template import run

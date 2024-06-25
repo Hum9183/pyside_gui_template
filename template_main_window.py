@@ -10,18 +10,18 @@ except ImportError:
 from .restart import restart_pyside_gui_template
 
 
-class PysideGuiTemplateMainWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
+class TemplateMainWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
     restored_instance = None
     name = 'PysideGuiTemplate'
     title = 'PySide Gui Template'
     workspace_control = f'{name}WorkspaceControl'
 
     def __init__(self, parent=None, *args, **kwargs):
-        super(PysideGuiTemplateMainWindow, self).__init__(parent, *args, **kwargs)
+        super().__init__(parent, *args, **kwargs)
 
     def init(self):
-        self.setObjectName(PysideGuiTemplateMainWindow.name)
-        self.setWindowTitle(PysideGuiTemplateMainWindow.title)
+        self.setObjectName(TemplateMainWindow.name)
+        self.setWindowTitle(TemplateMainWindow.title)
 
         menu_bar = self.menuBar()
 
