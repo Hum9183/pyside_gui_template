@@ -18,7 +18,9 @@ from . import restore as restore_module
 
 def restart() -> None:
     ptr = omui.MQtUtil.findControl(TemplateMainWindow.name)
-    if ptr is not None:
+    if ptr is None:
+        pass
+    else:
         cmds.deleteUI(TemplateMainWindow.workspace_control, control=True)
 
     window = __create_window()
@@ -35,13 +37,7 @@ def restore() -> None:
 def start() -> None:
     # 現在Maya内に存在するPysideGuiTemplateMainWindowのポインタを取得する
     ptr = omui.MQtUtil.findControl(TemplateMainWindow.name)
-    if ptr is not None: # ある場合
-        window = wrapInstance(int(ptr), QMainWindow)
-        if window.isVisible():
-            window.show()  # show()することで再フォーカスする
-        else:
-            window.setVisible(True)
-    else: # ない場合
+    if ptr is None: # ない場合
         window = __create_window() # 新規で生成する
 
         # TODO: 良くわからないので調べる
@@ -51,6 +47,12 @@ def start() -> None:
             cmds.deleteUI(TemplateMainWindow.workspace_control, control=True)
 
         window.show(dockable=True, uiScript=__get_restore_script())
+    else: # ある場合
+        window = wrapInstance(int(ptr), QMainWindow)
+        if window.isVisible():
+            window.show()  # show()することで再フォーカスする
+        else:
+            window.setVisible(True)
 
 
 def __create_window() -> TemplateMainWindow:
