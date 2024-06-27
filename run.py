@@ -13,6 +13,10 @@ from .template_main_window import TemplateMainWindow
 
 
 def restart() -> None:
+    # TODO:
+    #  左上の✗で閉じたときはworkspaceControlがのこらなかったのに、
+    #  Qtのclose()で閉じたときは残ったのが不思議。調べる
+
     if cmds.workspaceControl(TemplateMainWindow.workspace_control, q=True, exists=True):
         # すでに存在しているWindowは削除する
         cmds.deleteUI(TemplateMainWindow.workspace_control, control=True)
