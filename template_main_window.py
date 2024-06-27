@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import inspect
+import textwrap
+
 from maya.app.general import mayaMixin
 
 try:
@@ -7,7 +10,8 @@ try:
 except ImportError:
     from PySide2.QtWidgets import QAction, QMainWindow, QMenu, QPushButton
 
-from .restart import restart_pyside_gui_template
+from . import restart
+from . import restore
 
 
 class TemplateMainWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
@@ -27,18 +31,16 @@ class TemplateMainWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
 
         dev_menu = menu_bar.addMenu("Dev")
         restart_action = QAction('Restart', self)
-        restart_action.triggered.connect(lambda *arg: restart_pyside_gui_template())
+        restart_action.triggered.connect(lambda *arg: restart.restart_pyside_gui_template())
         dev_menu.addAction(restart_action)
 
         push_button = QPushButton('PUSH ME', self)
-        push_button.clicked.connect(lambda *arg: self.hello_world())
+        push_button.clicked.connect(lambda *arg: self.__hello_world())
         self.setCentralWidget(push_button)
 
+    def show(self):
+        restore_script = textwrap.dedent(inspect.getsource(restore))
+        super().show(dockable=True, retain=False, uiScript=restore_script)
 
-    def hello_world(self):
+    def __hello_world(self):
         print('Hello, World!')
-
-# TODO: よくわからないので調べる
-# window closeのコールバックで
-# cmds.deleteUI('PysideGuiTemplateWorkspaceControl', control=True)
-# を実行する
