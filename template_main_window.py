@@ -5,9 +5,11 @@ import textwrap
 from maya.app.general import mayaMixin
 
 try:
+    from PySide6.QtCore import Qt
     from PySide6.QtGui import QAction
     from PySide6.QtWidgets import QMainWindow, QMenu, QPushButton
 except ImportError:
+    from PySide2.QtCore import Qt
     from PySide2.QtWidgets import QAction, QMainWindow, QMenu, QPushButton
 
 from . import restart
@@ -26,6 +28,7 @@ class TemplateMainWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
     def init(self):
         self.setObjectName(TemplateMainWindow.name)
         self.setWindowTitle(TemplateMainWindow.title)
+        self.setAttribute(Qt.WA_DeleteOnClose) # つけるとclose()時にインスタンスも削除する。今回は必ずしも必要ない
 
         menu_bar = self.menuBar()
 

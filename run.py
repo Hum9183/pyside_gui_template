@@ -13,10 +13,9 @@ from .template_main_window import TemplateMainWindow
 
 
 def restart() -> None:
-    # TODO:
-    #  左上の✗で閉じたときはworkspaceControlがのこらなかったのに、
-    #  Qtのclose()で閉じたときは残ったのが不思議。調べる
-
+    # NOTE:
+    # Qtのclose()で閉じる場合は遅延評価のため、ウィンドウの削除が完了する前に__create_window()が呼ばれてしまい、
+    # workspaceControlが競合するため、cmds.workspaceControl()で削除する
     if cmds.workspaceControl(TemplateMainWindow.workspace_control, q=True, exists=True):
         # すでに存在しているWindowは削除する
         cmds.deleteUI(TemplateMainWindow.workspace_control, control=True)
@@ -28,7 +27,6 @@ def restart() -> None:
 def restore() -> None:
     TemplateMainWindow.restored_instance = __create_window()  # WARNING: GCに破棄されないようにクラス変数に保存しておく
     ptr = omui.MQtUtil.findControl(TemplateMainWindow.name)
-    # TODO: 良くわからないので調べる
     restored_control = omui.MQtUtil.getCurrentParent()
     omui.MQtUtil.addWidgetToMayaLayout(int(ptr), int(restored_control))
 
