@@ -3,9 +3,9 @@
 
 def restart_pyside_gui_template():
     import importlib
-    from pyside_gui_template import run, template_main_window
+    from pyside_gui_template import run, template_window
 
-    importlib.reload(template_main_window)
+    importlib.reload(template_window)
     importlib.reload(run)
     run.restart()
 

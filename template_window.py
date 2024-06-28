@@ -16,7 +16,7 @@ from . import restart
 from . import restore
 
 
-class TemplateMainWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
+class TemplateWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
     restored_instance = None
     name = 'PysideGuiTemplate'
     title = 'PySide Gui Template'
@@ -26,8 +26,8 @@ class TemplateMainWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
         super().__init__(parent, *args, **kwargs)
 
     def init(self):
-        self.setObjectName(TemplateMainWindow.name)
-        self.setWindowTitle(TemplateMainWindow.title)
+        self.setObjectName(TemplateWindow.name)
+        self.setWindowTitle(TemplateWindow.title)
         self.setAttribute(Qt.WA_DeleteOnClose) # つけるとclose()時にインスタンスも削除する。今回は必ずしも必要ない
 
         menu_bar = self.menuBar()
