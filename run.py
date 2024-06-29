@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from maya import cmds
 from maya import OpenMayaUI as omui
+from maya import cmds
 
 try:
     from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
@@ -34,10 +34,10 @@ def restore() -> None:
 def start() -> None:
     # 現在のMaya内に存在するTemplateWindowのポインタを取得する
     ptr = omui.MQtUtil.findControl(TemplateWindow.name)
-    if ptr is None: # ない場合
-        window = __create_window() # 新規で生成する
+    if ptr is None:  # ない場合
+        window = __create_window()  # 新規で生成する
         window.show()
-    else: # ある場合
+    else:  # ある場合
         window = wrapInstance(int(ptr), TemplateWindow)
         if window.isVisible():
             window.show()  # show()することで再フォーカスする
@@ -49,7 +49,3 @@ def __create_window() -> TemplateWindow:
     window = TemplateWindow()
     window.init()
     return window
-
-# startup
-# from pyside_gui_template import run
-# run.start()

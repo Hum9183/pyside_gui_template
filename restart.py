@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-def restart_pyside_gui_template():
+def restart_pyside_template_window():
     import importlib
-    from pyside_gui_template import run, template_window
+    from pyside_template_window import run, template_window
 
     importlib.reload(template_window)
     importlib.reload(run)
@@ -11,4 +11,4 @@ def restart_pyside_gui_template():
 
 
 if __name__ == '__main__':
-    restart_pyside_gui_template()
+    restart_pyside_template_window()

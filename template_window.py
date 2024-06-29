@@ -18,8 +18,8 @@ from . import restore
 
 class TemplateWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
     restored_instance = None
-    name = 'PysideGuiTemplate'
-    title = 'PySide Gui Template'
+    name = 'PysideTemplate'
+    title = 'PySide Template'
     workspace_control = f'{name}WorkspaceControl'
 
     def __init__(self, parent=None, *args, **kwargs):
@@ -28,7 +28,7 @@ class TemplateWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
     def init(self):
         self.setObjectName(TemplateWindow.name)
         self.setWindowTitle(TemplateWindow.title)
-        self.setAttribute(Qt.WA_DeleteOnClose) # つけるとclose()時にインスタンスも削除する。今回は必ずしも必要ない
+        self.setAttribute(Qt.WA_DeleteOnClose)  # つけるとclose()時にインスタンスも削除する。今回は必ずしも必要ない
 
         menu_bar = self.menuBar()
 
