@@ -34,7 +34,7 @@ class TemplateWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
 
         dev_menu = menu_bar.addMenu("Dev")
         restart_action = QAction('Restart', self)
-        restart_action.triggered.connect(lambda *arg: restart.restart_pyside_gui_template())
+        restart_action.triggered.connect(lambda *arg: restart.restart_pyside_template_window())
         dev_menu.addAction(restart_action)
 
         push_button = QPushButton('PUSH ME', self)
