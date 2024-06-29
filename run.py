@@ -25,7 +25,8 @@ def restart() -> None:
 
 
 def restore() -> None:
-    TemplateWindow.restored_instance = __create_window()  # WARNING: GCに破棄されないようにクラス変数に保存しておく
+    # WARNING: GCに破棄されないようにクラス変数に保存しておく
+    TemplateWindow.restored_instance = __create_window()
     ptr = omui.MQtUtil.findControl(TemplateWindow.name)
     restored_control = omui.MQtUtil.getCurrentParent()
     omui.MQtUtil.addWidgetToMayaLayout(int(ptr), int(restored_control))
