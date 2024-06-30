@@ -49,4 +49,5 @@ def start() -> None:
 def __create_window() -> TemplateWindow:
     window = TemplateWindow()
     window.init()
+    window.init_gui()
     return window

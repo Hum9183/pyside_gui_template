@@ -30,6 +30,7 @@ class TemplateWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
         self.setWindowTitle(TemplateWindow.title)
         self.setAttribute(Qt.WA_DeleteOnClose)  # つけるとclose()時にインスタンスも削除する。今回は必ずしも必要ない
 
+    def init_gui(self):
         menu_bar = self.menuBar()
 
         dev_menu = menu_bar.addMenu("Dev")
@@ -38,12 +39,12 @@ class TemplateWindow(mayaMixin.MayaQWidgetDockableMixin, QMainWindow):
         dev_menu.addAction(restart_action)
 
         push_button = QPushButton('PUSH ME', self)
-        push_button.clicked.connect(lambda *arg: self.__hello_world())
+        push_button.clicked.connect(lambda *arg: self.__print_hello_world())
         self.setCentralWidget(push_button)
 
     def show(self):
         restore_script = textwrap.dedent(inspect.getsource(restore))
         super().show(dockable=True, retain=False, uiScript=restore_script)
 
-    def __hello_world(self):
+    def __print_hello_world(self):
         print('Hello, World!')
